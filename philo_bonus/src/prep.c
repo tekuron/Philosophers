@@ -6,7 +6,7 @@
 /*   By: danz <danz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 23:40:02 by danz              #+#    #+#             */
-/*   Updated: 2026/01/27 22:47:14 by danz             ###   ########.fr       */
+/*   Updated: 2026/01/29 21:42:53 by danz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static int	check_args(int argc, char **argv)
 			if (argv[i][j] > '9' || argv[i][j++] < '0')
 				return (1);
 		}
+		if (ft_atoi(argv[i] <= 0))
+			return (1);
 		j = 0;
 		i++;
 	}

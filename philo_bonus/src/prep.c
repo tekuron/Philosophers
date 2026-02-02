@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: danz <danz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: danzamor <danzamor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 23:40:02 by danz              #+#    #+#             */
-/*   Updated: 2026/02/02 12:41:41 by danz             ###   ########.fr       */
+/*   Updated: 2026/02/02 17:59:25 by danzamor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	philo_create(int *pids, t_philo *args)
 	int	i;
 
 	i = 0;
+	sem_unlink("/fk_z_1");
+	sem_unlink("/pt_z_1");
 	args->fork_sem = sem_open("/fk_z_1", O_CREAT, 0644, args->nop);
 	args->print_sem = sem_open("/pt_z_1", O_CREAT, 0644, 1);
 	while (i < args->nop)

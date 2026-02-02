@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: danz <danz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: danzamor <danzamor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 19:16:35 by danz              #+#    #+#             */
-/*   Updated: 2026/01/27 23:07:20 by danz             ###   ########.fr       */
+/*   Updated: 2026/02/02 17:59:38 by danzamor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static void	close_philo(t_philo *args)
 	sem_close(args->eat_sem);
 	sem_close(args->fork_sem);
 	sem_close(args->print_sem);
+	sem_unlink("/fk_z_1");
+	sem_unlink("/pt_z_1");
 }
 
 void	*monitoring(void *arg)
@@ -78,7 +80,8 @@ static void	routine(t_philo *philo)
 	{
 		print_action(philo, "has taken a fork\n");
 		usleep(philo->time_to_die * 1000);
-		return ;
+		return ((void)printf("%ld %d died\n", get_ms() - philo->start_time,
+				philo->cur_p + 1));
 	}
 	while (1)
 	{
@@ -105,10 +108,12 @@ void	philo_start(t_philo args)
 	char	eat_name[50];
 
 	make_sem_name(eat_name, args.cur_p);
+	sem_unlink(eat_name);
 	args.eat_sem = sem_open(eat_name, O_CREAT, 0644, 1);
 	if (args.eat_sem == SEM_FAILED)
 		exit(1);
 	sem_unlink(eat_name);
-	pthread_create(&args.mon, NULL, monitoring, &args);
+	if (args.nop != 1)
+		pthread_create(&args.mon, NULL, monitoring, &args);
 	routine(&args);
 }
